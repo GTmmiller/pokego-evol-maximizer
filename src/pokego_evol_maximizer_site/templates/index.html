@@ -1,0 +1,145 @@
+{% extends "layout.html" %}
+{% block body %}
+<nav class="red lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+        <a id="logo-container" href="#" class="brand-logo">Evolution Maximizer</a>
+        <ul class="right">
+            <li><a class="modal-trigger" href="#modal1"><i class="large material-icons">info_outline</i></a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <form action="/maximize/" id="maximizeForm">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input class="validate" id="evolvable_pokemon" name="evolvable_pokemon" type="text" pattern="\d+" required>
+                            <label for="evolvable_pokemon" data-error="Please enter a positive integer">Pokemon That Can Evolve:</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input class="validate" id="total_candies" name="total_candies" type="text" pattern="\d+" required>
+                            <label for="total_candies" data-error="Please enter a positive integer">Total Pokemon Candies:</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="evolution_cost" class="validate"  name="evolution_cost" type="text" pattern="\d+" required>
+                            <label for="evolution_cost" data-error="Please enter a positive integer">Cost to Evolve a Pokemon:</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <div class="row">
+                                <div class="col m6 s6">
+                                    <button class="btn waves-effect waves-light red lighten-1" type="submit" name="action">
+                                        Calculate Pokemon to Transfer
+                                    </button>
+                                </div>
+                                <div class="col m6 s6">
+                                    <a id="clear_query" class="btn waves-effect waves-light red lighten-1">Clear Query</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div id="results"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Help Modal -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Evolution Maximizer</h4>
+        <p>
+            This application is here to help you optimize the amount of Pokemon you evolve
+            in Pokemon Go before you start mass evolving them. This is useful for getting rid of those
+            pesky Pidgies without squandering any exp and for making sure you get the most out of your Lucky Eggs!
+        </p>
+        <p>
+            Evolution Maximizer uses three things to calulate how many Pokemon you can transfer and evolve.
+            <ol>
+                <li><strong>Pokemon That Can Evolve:</strong> How many of one species of Pokemon you currently have</li>
+                <li><strong>Total Pokemon Candies:</strong> The total number of candies you have for that specific pokemon species</li>
+                <li><strong>Cost to Evolve a Pokemon:</strong> How much it costs to evolve one Pokemon of that species</li>
+            </ol>
+        </p>
+        <p>
+            Once you've inserted the three fields for the maximizer you'll get two results.
+            <ol>
+                <li><strong>Pokemon to Transfer:</strong> The optimal amount of Pokemon to transfer</li>
+                <li><strong>Pokemon to Evolve:</strong> How many Pokemon you can evolve after you transfer them</li>
+            </ol>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Cool, thanks!</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+        var results_showing = false;
+
+        $(document).ready(function(){
+            // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+            $('.modal-trigger').leanModal();
+        });
+          
+        $("#maximizeForm").submit(function(event) {
+            event.preventDefault();
+            var $form = $(this);
+            $.ajax({
+                type: $form.attr('method'),
+                url: $form.attr('action'),
+                data: $form.serialize(),
+                success: function(data){
+                    console.log('Successful call!');
+                    if(results_showing === false) {
+                        $("#results").append(" \
+                            <div class='col s12'> \
+                                <div class='divider red lighten-2'></div> \
+                            </div> \
+                            <div class='col s12'> \
+                                <label class='output_label' for='pokemon_transfer'>Pokemon to Transfer:</label> \
+                                <output id='pokemon_transfer'></output> \
+                            </div> \
+                            <div class='col s12'> \
+                                <label class='output_label' for='pokemon_evolve'>Pokemon to Evolve:</label> \
+                                <output id='pokemon_evolve'></output> \
+                            </div> \
+                            <div class='col s12'> \
+                                <button id='clear_results' class='btn waves-effect waves-light red lighten-1'>Clear Results</button> \
+                            </div> \
+                        ");
+                        $("#clear_results").click(function(event) {
+                            $("#results").empty();
+                            results_showing = false;
+                            $('html, body').animate({
+                                scrollTop: $("body").offset().top
+                            }, 1000);
+                        });
+                        results_showing === true;
+                    }
+                    $("#pokemon_transfer").html("");
+                    $("#pokemon_evolve").html("");
+                    $("#pokemon_transfer").append(data["pokemon_to_transfer"]);
+                    $("#pokemon_evolve").append(data["pokemon_to_evolve"]);
+                    $('html, body').animate({
+                        scrollTop: $("#results").offset().top
+                    }, 1000);
+                }
+            });
+        });
+
+        $("#clear_query").click(function(event) {
+            $("#evolvable_pokemon").val("");
+            $("#total_candies").val("");
+            $("#evolution_cost").val("");
+        });
+</script>
+{% endblock %}
