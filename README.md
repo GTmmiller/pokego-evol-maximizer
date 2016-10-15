@@ -1,6 +1,6 @@
-**[Pidgey Spam](https://pokeassistant.com/main/pidgeyspam) is a much more complete and useful tool that does a lot more than pokego-evol-maximizer. This was mostly created for fun, so please keep that in mind if you use it.**
+**[Pidgey Spam](https://pokeassistant.com/main/pidgeyspam) is a much more complete and useful tool that does a lot more than `pokego-evol-maximizer`. This was mostly created for fun, so please keep that in mind if you use it.**
 
-pokego-evol-maximizer is a utility for Pokemon Go that tells you how many Pokemon you should transfer to maximize the number of Pokemon you can evolve at that moment. 
+`pokego-evol-maximizer` is a utility for Pokemon Go that tells you how many Pokemon you should transfer to maximize the number of Pokemon you can evolve at that moment. 
 
 ## Motivation
 
@@ -8,7 +8,7 @@ I created this project to fill a personal need I had to make the most out of my 
 
 ## Installation
 
-In order to get started developing or running pokego-evol-maximizer, you need to:
+In order to get started developing or running `pokego-evol-maximizer`, you need to:
  
 1. [install anaconda](https://www.continuum.io/downloads) **Be sure to get the Python 3 version**. That should get you all the SciPy packages and tooling needed to run the site.
 
