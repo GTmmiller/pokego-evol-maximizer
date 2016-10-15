@@ -33,4 +33,8 @@ Feel free to do pretty much whatever you want with this code! If you take the ti
 
 ## License
 
-This software is covered by the MIT License
+This software is covered by the BSD 2 clause license
+
+## Disclaimer
+
+This project has no affiliation with The Pokemon Company or Niantic, Inc. All rights to the names "Pokemon" and "Pokemon Go" are reserved by the aforementioned parties.
